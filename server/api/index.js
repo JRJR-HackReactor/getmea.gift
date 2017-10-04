@@ -111,15 +111,12 @@ router.get('/me', (req, res) => {
 */
 router.post('/lists', (req, res) => {
   var title = req.body.title;
-  var secret = req.body.secret;
-  var user_id = req.body.user_id;
-  //Testing with Postman, not needing sessions
-  // var user_id = req.session.user_id;
   var description = req.body.description;
+  var user_id = req.session.user_id;
 
   helpers.createList({
     title: title,
-    secret: secret,
+    // secret: secret,
     user_id: user_id,
     description: description
   })
@@ -137,6 +134,8 @@ router.post('/lists', (req, res) => {
 router.delete('/lists/:id', (req, res) => {
   var list_id = req.params.id;
   var user_id = req.session.user_id;
+  console.log('Req sessions ',req.session);
+  // var user_id = req.session.user_id;
 
   helpers.deleteList(user_id, list_id)
   .then((id) => {
