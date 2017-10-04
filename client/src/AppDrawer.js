@@ -15,7 +15,7 @@ const AppDrawer = ({open, toggleDrawer, currentUser, muiTheme, showLists, histor
   const renderLists = () => {
     var username = currentUser.username;
     return (
-      currentUser.wishlists.map((list, index) => {
+      currentUser.myLists.map((list, index) => {
         return (
           <MenuItem
             key={index}

@@ -7,7 +7,7 @@ const getUserById = (user_id) => {
     User.findById(user_id)
     .select('-password') //don't send back password
     .populate({ //gets nested items
-      path: 'wishlists',
+      path: 'myLists',
       model: 'List',
       populate: {
         path: 'items',
@@ -34,7 +34,7 @@ const getUser = (username, loggedInUserId) => {
     User.findOne({username: username})
     .select('-password') //don't send back password
     .populate({ //gets nested items
-      path: 'wishlists',
+      path: 'myLists',
       model: 'List',
       populate: {
         path: 'items',
@@ -117,7 +117,7 @@ const deleteList = (user_id, list_id) => {
       })
       .then((user) => {
         //remove list ref from the user's list of wishlists
-        user.wishlists.pull(list_id);
+        user.myLists.pull(list_id);
         return user.save();
       })
       .then((user) => {
