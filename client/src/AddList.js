@@ -53,7 +53,7 @@ export default class AddList extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    this.props.func(this.state.title, this.state.description);
+    // this.props.func(this.state.title, this.state.description);
     this.setState({
       open: false,
       errorTextTitle: '*Required'
@@ -63,12 +63,12 @@ export default class AddList extends Component {
       description: this.state.description
     })
       .then((response) => {
-        console.log('after list post');
         this.setState({
           title: '',
           description: ''
-        })
-      }) 
+        });
+        this.props.refresh();
+      })
       .catch(function (error) {
         console.log(error.response);
       });

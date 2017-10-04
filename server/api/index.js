@@ -111,19 +111,21 @@ router.get('/me', (req, res) => {
 */
 router.post('/lists', (req, res) => {
   var title = req.body.title;
-  var secret = req.body.secret;
+  var description = req.body.description;
   var user_id = req.session.user_id;
 
   helpers.createList({
     title: title,
-    secret: secret,
-    user_id: user_id
+    // secret: secret,
+    user_id: user_id,
+    description: description
   })
   .then((list) => {
     res.send(list);
   })
   .catch((err) => {
-    res.status(401).send({err});
+    res.status(401).send(err);
+    // res.status(401).send({err});
   });
 });
 
@@ -132,6 +134,8 @@ router.post('/lists', (req, res) => {
 router.delete('/lists/:id', (req, res) => {
   var list_id = req.params.id;
   var user_id = req.session.user_id;
+  console.log('Req sessions ',req.session);
+  // var user_id = req.session.user_id;
 
   helpers.deleteList(user_id, list_id)
   .then((id) => {
