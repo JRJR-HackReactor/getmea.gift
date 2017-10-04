@@ -4,103 +4,96 @@ import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 import Checkbox from 'material-ui/Checkbox';
 import axios from 'axios';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ContentAdd from 'material-ui/svg-icons/content/add';
 
-
-
-const styles = {
-  block: {
-    maxWidth: 250,
-  },
-  checkbox: {
-    marginBottom: 16,
-  },
+const style = {
+  margin: 0,
+  top: 'auto',
+  right: 30,
+  bottom: 30,
+  left: 'auto',
+  position: 'fixed',
 };
 
 export default class AddList extends Component {
   constructor (props) {
     super(props);
-
     this.state = {
       open: false,
       title: '',
-      secret: false,
+      description: '',
       errorTextTitle: '*Required'
     };
+  }
 
-    this.handleOpen = () => {
-      this.setState({open: true});
-    };
+  handleOpen = () => {
+    this.setState({open: true});
+  };
 
-    this.handleClose = () => {
+  handleClose = () => {
+    this.setState({
+      errorTextTitle: '*Required',
+      open: false
+    });
+  };
+
+  handleTitleChange = (e,value) => {
+    if(value) {
       this.setState({
-        errorTextTitle: '*Required',
-        open: false
-      });
-    };
-
-    this.handleTitleChange = (e, newValue) => {
-      if(newValue) {
-        this.setState({
-          errorTextTitle: ''
-        })
-      }
-
-      this.setState({title: newValue})
-    }
-
-    this.updateCheck = function(){
-      this.setState((oldState) => {
-        return {
-          secret: !oldState.secret
-        };
-      });
-    }
-
-
-    this.handleSubmit = (e) => {
-      e.preventDefault();
-      console.log('props in addlist ', this.props)
-      console.log(this.state)
-      axios.post('/api/lists', {
-        title: this.state.title,
-        secret: this.state.secret
+        errorTextTitle: ''
       })
+    }
+    this.setState({title: value})
+  }
+
+  handleDesChange = (e,value) => {
+    this.setState({description:value});
+  }
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+    this.props.func(this.state.title, this.state.description);
+    this.setState({
+      open: false,
+      errorTextTitle: '*Required'
+    });
+    axios.post('/api/lists', {
+      title: this.state.title,
+      description: this.state.description
+    })
       .then((response) => {
-        console.log('response: ', response);
-        if (response.data) {
-          this.props.handleClose();
-          //rerender WishListPage
-          this.props.getdata();
-          this.props.goToList(response.data._id);
-        }
-      })
+        console.log('after list post');
+        this.setState({
+          title: '',
+          description: ''
+        })
+      }) 
       .catch(function (error) {
-        console.log('handlesubmit ', error.response);
+        console.log(error.response);
       });
-    };
+  };
 
-    //Shows error text and removes it when a value is input
-    this.handleErrorText = (e) => {
-      //makae sure the user has entered text
-      if(e.target.value.length) {
-        this.setState({errorText: ''});
-      } else {
-        this.setState({errorText: '*Required'});
-      }
+  //Shows error text and removes it when a value is input
+  handleErrorText = (e) => {
+    //makae sure the user has entered text
+    if(e.target.value.length) {
+      this.setState({errorText: ''});
+    } else {
+      this.setState({errorText: '*Required'});
     }
   }
 
-
   render() {
     /**
-    * A modal dialog can only be closed by selecting one of the actions.
-    */
+     * A modal dialog can only be closed by selecting one of the actions.
+     */
     const actions = [
       <FlatButton
         type="button"
         label="Cancel"
         primary={true}
-        onClick={this.props.handleClose}
+        onClick={this.handleClose}
       />,
       <FlatButton
         type="Submit"
@@ -112,32 +105,35 @@ export default class AddList extends Component {
     ];
 
     return (
+      <div>
+        <FloatingActionButton style={style} onClick={this.handleOpen}>
+          <ContentAdd />
+        </FloatingActionButton>
         <Dialog
           title={Header()}
           actions={actions}
           modal={true}
-          open={this.props.open}
-          onRequestClose={this.props.onRequestClose}
+          open={this.state.open}
+          onRequestClose={this.handleClose}
         >
-          <div style={{marginLeft: 150}}>
-            <form>
-                <TextField
-                  onChange={this.handleTitleChange}
-                  floatingLabelText="List Name"
-                  type="title"
-                  value={this.state.title}
-                  errorText={this.state.errorTextTitle}
-                  style={{marginRight: 30}}
-                /><br />
-                <Checkbox
-                  label="Secret"
-                  checked={this.state.secret}
-                  onCheck={this.updateCheck.bind(this)}
-                  style={styles.checkbox}
-                />
-            </form>
-          </div>
-        </Dialog>
+          <form>
+            <TextField
+              onChange={this.handleTitleChange}
+              floatingLabelText="List Name"
+              type="title"
+              errorText={this.state.errorTextTitle}
+              style={{marginRight: 30}}
+            /><br />
+            <TextField
+              onChange={this.handleDesChange}
+              floatingLabelText="List Description"
+              type="title"
+              style={{marginRight: 30}}
+            /><br />
+
+        </form>
+      </Dialog>
+    </div>
     );
   }
 }
