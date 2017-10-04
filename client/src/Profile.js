@@ -60,7 +60,7 @@ const fakeData = {
       secret: false,
       title: 'Mine',
       user_id: '1234',
-      description: 'Test 1 my' 
+      description: 'Test 1 my'
     },{
       _id: '2',
       items: ['test2'],
@@ -129,7 +129,7 @@ class Profile extends Component {
         // need to change for updated database
         this.setState({
           userData: res,
-          myLists: fakeData.myLists,
+          myLists: res.myLists,
           sharedLists: fakeData.sharedLists
         });
       })
@@ -264,8 +264,8 @@ class Profile extends Component {
         </div>
         <div className="paperContainer">
           <Paper zDepth={2}>
-            { lists.length < 1 ? <div> <img style={{height: 150, width: 150, padding: 20, paddingBottom: 0, filter: 'grayscale(100%)'}} src={giftImage} alt='none'/>
-              <h4 style={{padding: 0, color: 'grey'}}>No Items Here</h4> 
+          { lists.length < 1 ? <div> <img style={{height: 150, width: 150, padding: 20, paddingBottom: 0, filter: 'grayscale(100%)'}} src={giftImage} alt='none'/>
+              <h4 style={{padding: 0, color: 'grey'}}>No Items Here</h4>
             </div> : <Lists lists={lists} />
             }
           </Paper>
