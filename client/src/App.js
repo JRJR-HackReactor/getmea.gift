@@ -10,7 +10,7 @@ import {
 } from 'react-router-dom';
 import createHistory from 'history/createBrowserHistory';
 import Homepage from './Homepage';
-import WishListPage from './WishListPage';
+import Profile from './Profile';
 import Footer from './Footer';
 import Login from './Login';
 import Menu from 'material-ui/svg-icons/navigation/menu';
@@ -103,8 +103,8 @@ class App extends Component {
                 ></AppBar>
                 <AppDrawer handleLogout={this.handleLogout.bind(this)} currentUser={this.state.currentUser} setCurrentList={this.setCurrentList.bind(this)} toggleDrawer={this.toggleDrawer.bind(this)} open={this.state.drawerShow} />
                 <Route exact path="/" component={Homepage}/>
-                <Route exact path="/:username" component={(props) => <WishListPage {...props} currentUser={this.state.currentUser} />} />
-                <Route exact path="/:username/:list_id" component={(props) => <WishListPage {...props} currentUser={this.state.currentUser} />} />
+                <Route exact path="/:username" component={(props) => <Profile {...props} currentUser={this.state.currentUser} />} />
+                <Route exact path="/:username/:list_id" component={(props) => <Profile {...props} currentUser={this.state.currentUser} />} />
                 <Footer />
               </div>
             </div>

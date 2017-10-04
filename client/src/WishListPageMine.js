@@ -54,7 +54,7 @@ const style = {
   }
 };
 
-class WishListPage extends Component {
+class WishListPageShared extends Component {
   constructor(props) {
     super(props);
 
@@ -162,41 +162,41 @@ class WishListPage extends Component {
     }
     var isListOwner = false;
     if (this.state.currentList){
-       isListOwner = this.props.currentUser._id === this.state.currentList.user_id;
+      isListOwner = this.props.currentUser._id === this.state.currentList.user_id;
     }
     var list = this.state.showPurchased ? this.state.purchasedItems : this.state.wantedItems;
     if (list.length > 0) {
       return (
-                            list.map((row, index) => (
-                      <TableRow hoverable={true} key={index}>
-                        <TableRowColumn style={{fontSize: 18, width: '25%'}}>{row.title}</TableRowColumn>
-                        <TableRowColumn  style={{fontSize: 18}}>${row.price}</TableRowColumn>
-                        <TableRowColumn style={{color: 'white'}} >
-                        {!row.purchased &&
-                          <BuyGiftModal
-                            primary={this.props.muiTheme.palette.primary1Color}
-                            item={row}
-                            index={index}
-                            getUserData={this.getUserData.bind(this)}
-                            isListOwner={isListOwner}
-                            userData={this.state.userData}
-                          />
-                        }
-                        </TableRowColumn>
-                        <TableRowColumn hoverable={true} style={{ height: 140}}>
-                          {
-                            row.image_url && <Paper style={{marginTop: 10, maxHeight: 120, textAlign:'center'}} zDepth={1} >
-                              <img alt={''} style={style.images} src={row.image_url}/>
-                            </Paper>
-                          }
-                        </TableRowColumn>
-                      </TableRow>
-                    ))
+        list.map((row, index) => (
+          <TableRow hoverable={true} key={index}>
+          <TableRowColumn style={{fontSize: 18, width: '25%'}}>{row.title}</TableRowColumn>
+          <TableRowColumn  style={{fontSize: 18}}>${row.price}</TableRowColumn>
+          <TableRowColumn style={{color: 'white'}} >
+          {!row.purchased &&
+            <BuyGiftModal
+            primary={this.props.muiTheme.palette.primary1Color}
+            item={row}
+            index={index}
+            getUserData={this.getUserData.bind(this)}
+            isListOwner={isListOwner}
+            userData={this.state.userData}
+            />
+          }
+          </TableRowColumn>
+          <TableRowColumn hoverable={true} style={{ height: 140}}>
+          {
+            row.image_url && <Paper style={{marginTop: 10, maxHeight: 120, textAlign:'center'}} zDepth={1} >
+            <img alt={''} style={style.images} src={row.image_url}/>
+            </Paper>
+          }
+          </TableRowColumn>
+          </TableRow>
+        ))
       )
     } else {
       return <div><img style={{height: 150, width: 150, padding: 20, paddingBottom: 0, filter: 'grayscale(100%)'}} src={giftImage} alt='none'/>
-              <h4 style={{padding: 0, color: 'grey'}}>No Items Here</h4>
-            </div>
+        <h4 style={{padding: 0, color: 'grey'}}>No Items Here</h4>
+        </div>
     }
   }
 
@@ -410,4 +410,4 @@ class WishListPage extends Component {
   }
 }
 
-export default muiThemeable()(WishListPage);
+export default muiThemeable()(WishListPageShared);
