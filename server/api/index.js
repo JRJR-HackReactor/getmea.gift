@@ -11,6 +11,7 @@ const passport = require('passport');
 //We actually won't need this for our app, but good for testing db
 router.get('/users', (req, res) => {
   User.find().exec((err, users) => {
+    console.log('Error getting users route');
     res.send({users})
   })
 })
@@ -47,7 +48,8 @@ router.post('/signup', (req, res) => {
       helpers.createList({
         title: 'Wishlist',
         secret: false,
-        user_id: user._id
+        user_id: user._id,
+        description: 'This is your default wishlist'
       })
       .then((list) => {
         //get the user again which should now have the wishlist
