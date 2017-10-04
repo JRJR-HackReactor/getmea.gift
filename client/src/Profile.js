@@ -214,6 +214,18 @@ class Profile extends Component {
     })
   }
 
+  testAdd = (title,description) => {
+    var list = {
+      items: [],
+      secret: false,
+      title: title,
+      user_id: '4321',
+      description: description
+    }
+    var temp = this.state.myLists;
+    temp.push(list);
+    this.setState({myLists:temp});
+  }
   render() {
     const showTitle = () => {
       if (this.state.currentList) {
@@ -250,23 +262,15 @@ class Profile extends Component {
             <Tab onActive={this.showSharedLists.bind(this)} label="Shared Wishlists" />
           </Tabs>
         </div>
-        <AddList
-          list={this.state.currentList}
-          getdata={this.getUserData.bind(this)}
-          open={this.state.addListOpen}
-          onRequestClose={this.handleAddListClose.bind(this)}
-          handleClose={this.handleAddListClose.bind(this)}
-          state={this.state}
-        />
-
         <div className="paperContainer">
           <Paper zDepth={2}>
-          { lists.length < 1 ? <div> <img style={{height: 150, width: 150, padding: 20, paddingBottom: 0, filter: 'grayscale(100%)'}} src={giftImage} alt='none'/>
+            { lists.length < 1 ? <div> <img style={{height: 150, width: 150, padding: 20, paddingBottom: 0, filter: 'grayscale(100%)'}} src={giftImage} alt='none'/>
               <h4 style={{padding: 0, color: 'grey'}}>No Items Here</h4> 
             </div> : <Lists lists={lists} />
-          }
+            }
           </Paper>
         </div>
+        <AddList func={this.testAdd}/>
       </div>
     );
   }
