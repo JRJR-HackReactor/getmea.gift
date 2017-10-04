@@ -39,6 +39,12 @@ const getUser = (username, loggedInUserId) => {
       populate: {
         path: 'items',
         model: 'Item'
+      },
+      path: 'sharedLists',
+      model: 'List',
+      populate: {
+        path: 'items',
+        model: 'Item'
       }
     })
     .exec()
@@ -86,7 +92,8 @@ const createList = (list) => {
       })
       .then((user) => {
         //add new list to the user's list of wishlists
-        user.wishlists.push(savedList._id);
+        //This may be where to add shared stuff.......
+        user.myLists.push(savedList._id);
         return user.save();
       })
       .then((user) => {

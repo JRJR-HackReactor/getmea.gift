@@ -112,18 +112,23 @@ router.get('/me', (req, res) => {
 router.post('/lists', (req, res) => {
   var title = req.body.title;
   var secret = req.body.secret;
-  var user_id = req.session.user_id;
+  var user_id = req.body.user_id;
+  //Testing with Postman, not needing sessions
+  // var user_id = req.session.user_id;
+  var description = req.body.description;
 
   helpers.createList({
     title: title,
     secret: secret,
-    user_id: user_id
+    user_id: user_id,
+    description: description
   })
   .then((list) => {
     res.send(list);
   })
   .catch((err) => {
-    res.status(401).send({err});
+    res.status(401).send(err);
+    // res.status(401).send({err});
   });
 });
 
