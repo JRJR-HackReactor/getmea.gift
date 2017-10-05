@@ -85,9 +85,19 @@ router.post('/login', (req, res) => {
 
 //Logs the user out by clearing the session
 router.get('/logout', (req, res) => {
-  delete req.session.user_id;
-  res.send('success')
-});
+  return new Promise((resolve, reject) => {
+    delete req.session.user_id;
+    resolve('success');
+  })
+    .then((message)=> {
+      console.log(message);
+      res.redirect('/');
+    });
+
+})
+  // .then((res) => {
+  //   res.redirect('/');
+  // });
 
 //Sends back the logged in user's info
 //We use this in the react app
