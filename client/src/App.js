@@ -6,6 +6,7 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import {
   Router,
   Route,
+  Switch,
   Link
 } from 'react-router-dom';
 import createHistory from 'history/createBrowserHistory';
@@ -77,6 +78,10 @@ class App extends Component {
       .then((response) => {
         this.setCurrentUser({});
       })
+      .then(() => {
+        history.push('/');
+
+      })
       .catch(function (error) {
         console.log(error);
       });
@@ -102,9 +107,11 @@ class App extends Component {
                   zDepth={4}
                 ></AppBar>
                 <AppDrawer handleLogout={this.handleLogout.bind(this)} currentUser={this.state.currentUser} setCurrentList={this.setCurrentList.bind(this)} toggleDrawer={this.toggleDrawer.bind(this)} open={this.state.drawerShow} />
-                <Route exact path="/" component={Homepage}/>
-                <Route exact path="/:username" component={(props) => <Profile {...props} currentUser={this.state.currentUser} refresh={this.getLoggedInUser.bind(this)}/>} />
-                <Route exact path="/:username/:list_id" component={(props) => <Profile {...props} currentUser={this.state.currentUser} refresh={this.getLoggedInUser.bind(this)}/>} />
+                <Switch>
+                  <Route exact path="/:username/:list_id" component={(props) => <Profile {...props} currentUser={this.state.currentUser} refresh={this.getLoggedInUser.bind(this)}/>} />
+                  <Route exact path="/:username" component={(props) => <Profile {...props} currentUser={this.state.currentUser} refresh={this.getLoggedInUser.bind(this)}/>} />
+                  <Route path="/" component={Homepage}/>
+                </Switch>
                 <Footer />
               </div>
             </div>

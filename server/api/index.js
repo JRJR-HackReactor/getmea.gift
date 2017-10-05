@@ -90,9 +90,12 @@ router.get('/logout', (req, res) => {
     resolve('success');
   })
     .then((message)=> {
-      console.log(message);
-      res.redirect('/');
-    });
+      // console.log(message);
+      res.end();
+    })
+    // .catch((message) => {
+    //   console.log(message)
+    // });
 
 })
   // .then((res) => {

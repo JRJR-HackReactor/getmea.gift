@@ -31,12 +31,18 @@ const AppDrawer = ({open, toggleDrawer, currentUser, muiTheme, showLists, histor
       })
     )
   }
-
+const navigateHomeProfile = () => {
+  console.log('hello there');
+  history.push('/'+currentUser.username+'');
+  setCurrentList({});
+  toggleDrawer();
+}
   return (
     <div>
       <Drawer open={open} onClick={toggleDrawer}>
         <MenuItem leftIcon={<ArrowBack />} onClick={toggleDrawer} />
-        <ProfileMenuSection currentUser={currentUser} />
+        <ProfileMenuSection currentUser={currentUser} onClick={navigateHomeProfile} />
+        {(currentUser !==null ) ? <MenuItem onClick={navigateHomeProfile}>Profile</MenuItem> : ''}
         <MenuItem leftIcon={<PersonOutline />} onClick={handleLogout}>Logout</MenuItem>
         <Divider />
         {/* If user is logged in, show a submenu of all their Wishlists */
