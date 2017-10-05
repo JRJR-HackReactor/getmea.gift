@@ -45,9 +45,7 @@ class App extends Component {
     };
 
     this.setCurrentUser = (user) => {
-      this.setState({currentUser: user});
-      console.log('current user updated to: ', this.state.currentUser.username);
-      console.log(this);
+      this.getLoggedInUser();
     }
 
     this.getLoggedInUser = () => {
@@ -100,7 +98,7 @@ class App extends Component {
                 <AppBar id='appBar'
                   title={<Link style={style.logo} to="/">Get Me A Gift</Link>}
                   iconElementLeft={<IconButton><Menu onClick={() => this.toggleDrawer()} /></IconButton>}
-                  iconElementRight={<Login history={history} handleLogout={this.handleLogout.bind(this)} setCurrentUser={this.setCurrentUser.bind(this)} user={this.state.currentUser} currentList={this.state.currentList}/>}
+                  iconElementRight={<Login history={history} handleLogout={this.handleLogout.bind(this)} refresh={this.getLoggedInUser.bind(this)} user={this.state.currentUser} currentList={this.state.currentList}/>}
                   zDepth={4}
                 ></AppBar>
                 <AppDrawer handleLogout={this.handleLogout.bind(this)} currentUser={this.state.currentUser} setCurrentList={this.setCurrentList.bind(this)} toggleDrawer={this.toggleDrawer.bind(this)} open={this.state.drawerShow} />

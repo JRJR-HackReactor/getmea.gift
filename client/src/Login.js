@@ -58,7 +58,7 @@ export default class Login extends Component {
       })
       .then((response) => {
         if (response.data) {
-          this.props.setCurrentUser(response.data);
+          this.props.refresh();
           this.setState({open: false});
           if (this.props.history.location.pathname === '/'){
             this.props.history.push('/'+this.state.username)

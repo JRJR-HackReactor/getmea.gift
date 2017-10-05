@@ -101,16 +101,6 @@ class Profile extends Component {
   }
 
   render() {
-    const showTitle = () => {
-      if (this.state.currentList) {
-        return (
-          <div>
-          {this.state.currentList.title.toUpperCase()} <br/>
-          <div style={style.username}>{this.props.match.params.username.toUpperCase()}</div>
-          </div>
-        )
-      }
-    }
     const topRightMenu = (
       this.state.currentList && <IconMenu iconButtonElement={
         <IconButton>
@@ -128,7 +118,7 @@ class Profile extends Component {
     return (
       <div className="wishlistContainer" style={{maxWidth: 800, margin: 'auto', textAlign: 'center', paddingTop: 50}} >
         <div>
-          <AppBar ></AppBar>
+          <AppBar title={this.props.match.params.username.toUpperCase()} ></AppBar>
           <Tabs>
             <Tab onActive={this.showMyLists.bind(this)} label="Your Wishlists" />
             <Tab onActive={this.showSharedLists.bind(this)} label="Shared Wishlists" />
