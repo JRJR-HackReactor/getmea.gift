@@ -127,20 +127,18 @@ export default class AddItem extends Component {
         url: this.state.url,
         image_url: this.state.imageUrl,
         comments: this.state.comments,
-        list_id: this.props.list._id,
-        user_id: this.props.list.user_id
+        list_id: this.props.match.params.list_id
       })
       .then((response) => {
         if (response.data) {
           this.setState({open: false});
           //rerender WishListPage
-          this.props.getdata()
+          this.props.refresh();
         }
         //reset the state
         this.setState(initialState)
       })
       .catch(function (error) {
-        console.log('handlesubmit ', error.response);
       })
     }
 

@@ -34,24 +34,26 @@ class BuyGiftModal extends React.Component {
       })
      .then(() => {
        this.handleModalClose()
-       this.props.getUserData()
-       console.log(this.props.item.purchased)
+       this.props.refresh();
      })
-   }
+    }
 
    this.deleteItem = () => {
       var id = this.props.item._id
      axios.delete("/api/items/" + id)
      .then(() => {
        this.handleModalClose()
-       this.props.getUserData()
-       console.log(this.props.item.purchased)
+       this.props.refresh();
      })
    }
 
     this.handleModalOpen = () => {
       this.handleClose()
-      this.setState({modalOpen: true});
+      if(props.isOwner) {
+        this.deleteItem();
+      } else {
+        this.setState({modalOpen: true});
+      }
     }
 
 
@@ -90,8 +92,13 @@ class BuyGiftModal extends React.Component {
       />
     ];
 
+    var text = '';
+    if (this.props.isOwner) {
+      text = "Are you sure you want to delete this?";
+    } else {
+      text = "Will you get this gift?";
+    }
     if (this.state.open) {
-      console.log(this.props);
       return (
         <Dialog
           actions={actions}
@@ -105,7 +112,7 @@ class BuyGiftModal extends React.Component {
           <p style={{color: 'black'}}>Comments from {this.props.userData.username[0].toUpperCase()+''+this.props.userData.username.slice(1)}: {this.props.item.comments}</p>
           {this.props.item.image_url && <Paper style ={{maxHeight: 290, maxWidth: 290}}><img alt ='' style={{maxHeight: 290, maxWidth: 290}} src={this.props.item.image_url}/></Paper>}
           <p style={{fontSize: 15, color: 'black'}}>Link to product: <a style={{height: 20, textDecoration: 'none',  color: 'white', backgroundColor: this.props.primary, border: '1px solid #d8e7ff', padding: 1, fontSize: 14, borderRadius: '10%'}} href={this.props.item.url} target="_blank">Click Here</a></p>
-          <h3 style={{textAlign: 'right', marginTop: -50}}>Will you get this gift?</h3>
+          <h3 style={{textAlign: 'right', marginTop: -50}}>{text}</h3>
 
         </Dialog>
       )
@@ -117,17 +124,21 @@ class BuyGiftModal extends React.Component {
           modal={true}
           open={this.state.modalOpen}>
           <Error style={{float: 'right'}} />
-          <h2>Are you sure you are going to get this gift?</h2>
-          If you claim this gift, it will disappear. And nobody else will be able to get this for {this.props.userData.username[0].toUpperCase()+this.props.userData.username.slice(1)}.
-        </Dialog>
+          {!this.props.isOwner ? 
+              <div>
+                <h2>Are you sure you are going to get this gift?</h2>
+                <div>If you claim this gift, it will disappear. And nobody else will be able to get this for {this.props.userData.username[0].toUpperCase()+this.props.userData.username.slice(1)}. 
+                </div> 
+              </div>:
+              <h2>Are you sure you want to delete this item?  </h2>}   
+            </Dialog>
       )
     } else {
-         if (!this.props.isListOwner) {
-           return <RaisedButton secondary label="Get Gift" onClick={this.handleOpen.bind(this)} />
-         } else {
-           return <RaisedButton secondary label="Delete" onClick={()=>{this.deleteItem(this.props.index)}} />
-         }
-
+      if (!this.props.isOwner) {
+        return <RaisedButton secondary label="Get Gift" onClick={this.handleOpen.bind(this)} />
+      } else {
+        return <RaisedButton secondary label="Delete" onClick={this.handleOpen.bind(this)} />
+      }
     }
   }
 }

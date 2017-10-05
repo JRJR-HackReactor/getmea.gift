@@ -1,18 +1,8 @@
 import React, { Component } from 'react';
 import muiThemeable from 'material-ui/styles/muiThemeable';
-import IconButton from 'material-ui/IconButton';
 import Paper from 'material-ui/Paper';
-import IconMenu from 'material-ui/IconMenu';
-import NavigationExpandMoreIcon from 'material-ui/svg-icons/navigation/expand-more';
-import MenuItem from 'material-ui/MenuItem';
 import AppBar from 'material-ui/AppBar';
-import Visibility from 'material-ui/svg-icons/action/visibility';
-import VisibilityOff from 'material-ui/svg-icons/action/visibility-off';
 import { Tabs, Tab } from 'material-ui/Tabs';
-import Subheader from 'material-ui/Subheader';
-
-import axios from 'axios';
-
 import giftImage from './img/gift.png';
 
 import AddList from './AddList';
@@ -29,8 +19,6 @@ const style = {
     maxWidth: '100%'
   },
 };
-
-
 
 class Profile extends Component {
   constructor(props) {
@@ -63,61 +51,11 @@ class Profile extends Component {
     });
   }
 
-  renderMessages() {
-    if (this.state.currentList) {
-      var username = this.props.match.params.username;
-
-      if (this.state.currentList.items && this.state.currentList.items.length >= 0) {
-        return (
-
-          this.state.userData.myLists.map((list, index) => {
-            return (
-              <MenuItem
-                key={index}
-                rightIcon={list.secret ? <VisibilityOff /> : <Visibility />}
-                primaryText={list.title}
-                onClick={ () => {
-                  this.props.history.push('/'+username+'/'+list._id);
-                  this.setState({currentList: list});
-                }} />
-            )})
-          )
-      }
-    }
-  }
-
   goToList(list_id) {
     this.props.history.push('/'+this.props.match.params.username+'/'+list_id);
   }
 
-  handleDelete() {
-    axios.delete('/api/lists/'+this.state.currentList._id)
-    .then((res) => {
-      this.setState({
-        deleteOpen: false
-      })
-      this.props.history.push('/'+this.props.match.params.username)
-    })
-  }
-
-  testFunc(e) {
-    console.log('****************');
-    console.log(e);
-  }
-
   render() {
-    const topRightMenu = (
-      this.state.currentList && <IconMenu iconButtonElement={
-        <IconButton>
-        <NavigationExpandMoreIcon />
-        </IconButton>
-      }>
-        <Subheader>{this.state.currentListOwner}'s Other Wishlists </Subheader>
-
-        {this.renderMessages()}
-
-      </IconMenu>
-    );
     var lists = this.state.showMyLists ? this.state.myLists : this.state.sharedLists;
     return (
       <div className="wishlistContainer" style={{maxWidth: 800, margin: 'auto', textAlign: 'center', paddingTop: 50}} >
@@ -131,12 +69,12 @@ class Profile extends Component {
         <div className="paperContainer">
           <Paper zDepth={2}>
             { (lists.length) < 1 ? <div> <img style={{height: 150, width: 150, padding: 20, paddingBottom: 0, filter: 'grayscale(100%)'}} src={giftImage} alt='none'/>
-              <h4 style={{padding: 0, color: 'grey'}}>No Items Here</h4>
-            </div> : <Lists lists={lists} refresh={this.props.refresh} test={this.testFunc}/>
+              <h4 style={{padding: 0, color: 'grey'}}>No Lists Here</h4>
+            </div> : <Lists lists={lists} refresh={this.props.refresh} username={this.state.userData.username} history={this.props.history}/>
             }
           </Paper>
         </div>
-        <AddList func={this.testAdd} refresh={this.props.refresh}/>
+        <AddList func={this.testAdd} currentUser={this.state.userData} refresh={this.props.refresh}/>
       </div>
     );
   }

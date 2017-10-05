@@ -52,7 +52,6 @@ export default class AddList extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    // this.props.func(this.state.title, this.state.description);
     this.setState({
       open: false,
       errorTextTitle: '*Required'

@@ -30,9 +30,10 @@ class Lists extends React.Component {
         this.props.refresh();
       })
   }
-  
+
   selectHandle = (id) => {
-    console.log(id);
+    console.log(id +this.props.username);
+    this.props.history.push('/'+this.props.username+'/'+id)
   }
 
   render() {
@@ -50,7 +51,7 @@ class Lists extends React.Component {
      ];  
     return (
       <div>
-        <Table selectable={true} onRowSelection={this.test}>
+        <Table>
           <TableBody>
             { this.props.lists.map((list, index) => {
               return <List list={list} key={index} delete={this.handleOpen}  select={this.selectHandle}/>
