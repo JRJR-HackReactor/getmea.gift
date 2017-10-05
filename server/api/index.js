@@ -143,6 +143,24 @@ router.post('/lists', (req, res) => {
 });
 
 
+/*expecting
+{ owner_id, username, list_id}
+*/
+router.post('/share', (req, res) => {
+  var username = req.body.username;
+  var ownerId = req.body.user_id;
+  var listId = req.body.list_id;
+  helpers.shareList(ownerId, username, listId)
+  .then((user) => {
+    console.log('Post complete', user);
+    res.end();
+  })
+  .catch((err) =>{
+    console.log('Post failed', err);
+  })
+});
+
+
 //delete list
 router.delete('/lists/:id', (req, res) => {
   var list_id = req.params.id;

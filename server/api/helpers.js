@@ -164,6 +164,31 @@ const updateList = (user_id, list_id, listUpdates) => {
     }
   })
 };
+// add a list to a users shared with me list
+const shareList = (owner_id, username, list_id) => {
+  return new Promise((resolve, reject) => {
+    return List.find({_id: list_id, user_id: owner_id})
+    .then(()=> {
+      return User.findOneAndUpdate({username: username},{$push: {sharedLists: list_id}})
+    })
+    .then((user) => {
+      console.log('The updated user including shared list', user);
+      resolve(user);
+    })
+    .catch((err) => {
+      //issue with either the list find or updating the user_id
+      reject(err);
+    });
+  });
+};
+
+//remove a list from a users shared with me list
+const removeSharedList = (owner_id, username, list_id) => {
+  return new Promise(function(resolve, reject) {
+    resolve();
+    reject();
+  });
+};
 
 
 const addItem = (user_id, item) => {
@@ -274,6 +299,7 @@ module.exports = {
   createList,
   deleteList,
   updateList,
+  shareList,
   addItem,
   updateItem,
   deleteItem
