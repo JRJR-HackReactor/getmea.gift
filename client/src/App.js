@@ -16,6 +16,7 @@ import Login from './Login';
 import Menu from 'material-ui/svg-icons/navigation/menu';
 import AppDrawer from './AppDrawer';
 import IconButton from 'material-ui/IconButton';
+import WishList from './WishList';
 
 const history = createHistory();
 //overwrite default theme
@@ -44,10 +45,6 @@ class App extends Component {
       drawerShow: false
     };
 
-    this.setCurrentUser = (user) => {
-      this.getLoggedInUser();
-    }
-
     this.getLoggedInUser = () => {
       axios.get('/api/me')
       .then((user) => {
@@ -58,7 +55,6 @@ class App extends Component {
     }
 
     this.setCurrentList = (list) => {
-      console.log('current list is ', list);
       this.setState({
         currentList: list
       })
@@ -75,7 +71,7 @@ class App extends Component {
       e.preventDefault();
       axios('/api/logout')
       .then((response) => {
-        this.setCurrentUser({});
+        this.setState({currentUser:''});
       })
       .catch(function (error) {
         console.log(error);
@@ -104,7 +100,7 @@ class App extends Component {
                 <AppDrawer handleLogout={this.handleLogout.bind(this)} currentUser={this.state.currentUser} setCurrentList={this.setCurrentList.bind(this)} toggleDrawer={this.toggleDrawer.bind(this)} open={this.state.drawerShow} />
                 <Route exact path="/" component={Homepage}/>
                 <Route exact path="/:username" component={(props) => <Profile {...props} currentUser={this.state.currentUser} refresh={this.getLoggedInUser.bind(this)}/>} />
-                <Route exact path="/:username/:list_id" component={(props) => <Profile {...props} currentUser={this.state.currentUser} refresh={this.getLoggedInUser.bind(this)}/>} />
+                <Route exact path="/:username/:list_id" component={(props) => <WishList {...props} currentUser={this.state.currentUser} refresh={this.getLoggedInUser.bind(this)}/>} />
                 <Footer />
               </div>
             </div>

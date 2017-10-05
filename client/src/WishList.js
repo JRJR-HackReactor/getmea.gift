@@ -1,0 +1,93 @@
+import React, { Component } from 'react';
+import muiThemeable from 'material-ui/styles/muiThemeable';
+import Paper from 'material-ui/Paper';
+import AppBar from 'material-ui/AppBar';
+import giftImage from './img/gift.png';
+import AddItem from './AddItem';
+import Items from './Items';
+
+const style = {
+
+  backgroundStyle: {
+    backgroundColor: '#eaf2ff',
+    height: '110%',
+    paddingBottom: 40
+  },
+  images: {
+    maxHeight: 120,
+    maxWidth: '100%'
+  },
+};
+
+
+
+class WishList extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      userData: null,
+      items: [],
+      isOwner: false,
+      title: ''
+    }
+  }
+
+  componentDidMount() {
+    this.getUserData();
+  }
+
+  getUserData() {
+    var items = [];
+    var title = '';
+    var isOwner = false;
+    var list_id = this.props.match.params.list_id;
+    this.props.currentUser.myLists.forEach((el) => {
+      if (el._id === list_id) {
+        title = el.title;
+        items = el.items;
+        isOwner = true;
+      }
+    })
+
+    this.props.currentUser.sharedLists.forEach((el) => {
+      if (el._id === list_id) {
+        title = el.title;
+        items = el.items;
+      }
+    })
+    
+    this.setState({
+      userData: this.props.currentUser,
+      title: title,
+      isOwner: isOwner,
+      items: items || []
+    });
+  }
+
+  render() {
+    return (
+      <div className="wishlistContainer" style={{maxWidth: 800, margin: 'auto', textAlign: 'center', paddingTop: 50}} >
+        <div>
+          <AppBar title={this.state.title.toUpperCase()} ></AppBar>
+        </div>
+        <div className="paperContainer">
+          <Paper zDepth={2}>
+            { (this.state.items.length) < 1 ? <div> <img style={{height: 150, width: 150, padding: 20, paddingBottom: 0, filter: 'grayscale(100%)'}} src={giftImage} alt='none'/>
+              <h4 style={{padding: 0, color: 'grey'}}>No Items Here</h4>
+            </div> : <Items 
+                      items={this.state.items}
+                      refresh={this.props.refresh}
+                      userData={this.state.userData}
+                      isOwner={this.state.isOwner}
+                      history={this.props.history}
+                    />
+            }
+          </Paper>
+        </div>
+        <AddItem {...this.props} currentUser={this.state.userData} refresh={this.props.refresh}/>
+      </div>
+    );
+  }
+}
+
+export default muiThemeable()(WishList);
