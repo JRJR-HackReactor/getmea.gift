@@ -58,8 +58,8 @@ class Profile extends Component {
   getUserData() {
     this.setState({
       userData: this.props.currentUser,
-      myLists: this.props.currentUser.myLists,
-      sharedLists: this.props.currentUser.sharedLists
+      myLists: this.props.currentUser.myLists || [],
+      sharedLists: this.props.currentUser.sharedLists || []
     });
   }
 
@@ -126,7 +126,7 @@ class Profile extends Component {
         </div>
         <div className="paperContainer">
           <Paper zDepth={2}>
-            { lists.length < 1 ? <div> <img style={{height: 150, width: 150, padding: 20, paddingBottom: 0, filter: 'grayscale(100%)'}} src={giftImage} alt='none'/>
+            { (lists.length) < 1 ? <div> <img style={{height: 150, width: 150, padding: 20, paddingBottom: 0, filter: 'grayscale(100%)'}} src={giftImage} alt='none'/>
               <h4 style={{padding: 0, color: 'grey'}}>No Items Here</h4>
             </div> : <Lists lists={lists} refresh={this.props.refresh} />
             }
