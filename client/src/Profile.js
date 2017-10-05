@@ -100,6 +100,11 @@ class Profile extends Component {
     })
   }
 
+  testFunc(e) {
+    console.log('****************');
+    console.log(e);
+  }
+
   render() {
     const topRightMenu = (
       this.state.currentList && <IconMenu iconButtonElement={
@@ -113,7 +118,6 @@ class Profile extends Component {
 
       </IconMenu>
     );
-
     var lists = this.state.showMyLists ? this.state.myLists : this.state.sharedLists;
     return (
       <div className="wishlistContainer" style={{maxWidth: 800, margin: 'auto', textAlign: 'center', paddingTop: 50}} >
@@ -128,7 +132,7 @@ class Profile extends Component {
           <Paper zDepth={2}>
             { (lists.length) < 1 ? <div> <img style={{height: 150, width: 150, padding: 20, paddingBottom: 0, filter: 'grayscale(100%)'}} src={giftImage} alt='none'/>
               <h4 style={{padding: 0, color: 'grey'}}>No Items Here</h4>
-            </div> : <Lists lists={lists} refresh={this.props.refresh} />
+            </div> : <Lists lists={lists} refresh={this.props.refresh} test={this.testFunc}/>
             }
           </Paper>
         </div>
