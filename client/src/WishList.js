@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import muiThemeable from 'material-ui/styles/muiThemeable';
 import Paper from 'material-ui/Paper';
 import AppBar from 'material-ui/AppBar';
+import {FlatButton} from 'material-ui';
 import giftImage from './img/gift.png';
 import AddItem from './AddItem';
 import Items from './Items';
-
+import Share from './Share';
 const style = {
 
   backgroundStyle: {
@@ -28,7 +29,9 @@ class WishList extends Component {
       userData: null,
       items: [],
       isOwner: false,
-      title: ''
+      title: '',
+      shareOpen: false,
+      list_id: null
     }
   }
 
@@ -60,15 +63,24 @@ class WishList extends Component {
       userData: this.props.currentUser,
       title: title,
       isOwner: isOwner,
-      items: items || []
+      items: items || [],
+      list_id: list_id
     });
+  }
+
+  openShare = () => {
+    this.setState({shareOpen:true});
+  }
+
+  closeShare = () => {
+    this.setState({shareOpen:false});
   }
 
   render() {
     return (
       <div className="wishlistContainer" style={{maxWidth: 800, margin: 'auto', textAlign: 'center', paddingTop: 50}} >
         <div>
-          <AppBar title={this.state.title.toUpperCase()} ></AppBar>
+          <AppBar title={this.state.title.toUpperCase()} iconElementRight={<FlatButton label="Share" onClick={this.openShare}/>}></AppBar>
         </div>
         <div className="paperContainer">
           <Paper zDepth={2}>
@@ -85,6 +97,12 @@ class WishList extends Component {
           </Paper>
         </div>
         <AddItem {...this.props} currentUser={this.state.userData} refresh={this.props.refresh}/>
+        <Share
+          list={this.state.list_id}
+          open={this.state.shareOpen}
+          onRequestClose={this.closeShare.bind(this)}
+          handleClose={this.closeShare.bind(this)}
+        />
       </div>
     );
   }
