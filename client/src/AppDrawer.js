@@ -40,7 +40,7 @@ const navigateHomeProfile = () => {
     <div>
       <Drawer open={open} onClick={toggleDrawer}>
         <MenuItem leftIcon={<ArrowBack />} onClick={toggleDrawer} />
-        <ProfileMenuSection currentUser={currentUser} onClick={navigateHomeProfile} />
+        <MenuItem ><ProfileMenuSection currentUser={currentUser} onClick={navigateHomeProfile} /></MenuItem>
         {(currentUser !==null ) ? <MenuItem onClick={navigateHomeProfile}>Profile</MenuItem> : ''}
         <MenuItem leftIcon={<PersonOutline />} onClick={handleLogout}>Logout</MenuItem>
         <Divider />
