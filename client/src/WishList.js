@@ -58,7 +58,7 @@ class WishList extends Component {
         items = el.items;
       }
     })
-    
+
     if (!isOwner) {
       items = items.filter((el)=> {
         return el.purchased === false;
@@ -85,13 +85,13 @@ class WishList extends Component {
     return (
       <div className="wishlistContainer" style={{maxWidth: 800, margin: 'auto', textAlign: 'center', paddingTop: 50}} >
         <div>
-          <AppBar title={this.state.title.toUpperCase()} iconElementRight={<FlatButton label="Share" onClick={this.openShare}/>}></AppBar>
+          <AppBar showMenuIconButton={false} title={this.state.title.toUpperCase()} iconElementRight={<FlatButton label="Share" onClick={this.openShare}/>} ></AppBar>
         </div>
         <div className="paperContainer">
           <Paper zDepth={2}>
             { (this.state.items.length) < 1 ? <div> <img style={{height: 150, width: 150, padding: 20, paddingBottom: 0, filter: 'grayscale(100%)'}} src={giftImage} alt='none'/>
               <h4 style={{padding: 0, color: 'grey'}}>No Items Here</h4>
-            </div> : <Items 
+            </div> : <Items
                       items={this.state.items}
                       refresh={this.props.refresh}
                       userData={this.state.userData}
