@@ -73,7 +73,8 @@ class App extends Component {
       axios('/api/logout')
       .then((response) => {
         // this.setState({currentUser:null});
-        this.refresh();
+        return this.getLoggedInUser()
+        // this.refresh();
       })
       .then(() => {
         history.push('/');
