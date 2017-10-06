@@ -7,6 +7,7 @@ import giftImage from './img/gift.png';
 import AddItem from './AddItem';
 import Items from './Items';
 import Share from './Share';
+import Chat from './Chat';
 const style = {
 
   backgroundStyle: {
@@ -35,7 +36,7 @@ class WishList extends Component {
     }
   }
 
-  componentDidMount() {
+  componentWillMount() {
     this.getUserData();
   }
 
@@ -82,6 +83,7 @@ class WishList extends Component {
   }
 
   render() {
+    var name = this.state.userData === null ? 'Casper' : this.state.userData.username;
     return (
       <div className="wishlistContainer" style={{maxWidth: 800, margin: 'auto', textAlign: 'center', paddingTop: 50}} >
         <div>
@@ -107,6 +109,7 @@ class WishList extends Component {
           onRequestClose={this.closeShare.bind(this)}
           handleClose={this.closeShare.bind(this)}
         />
+        <Chat list_id={this.state.list_id} name={name}/>
       </div>
     );
   }
