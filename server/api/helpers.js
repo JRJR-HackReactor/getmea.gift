@@ -12,6 +12,12 @@ const getUserById = (user_id) => {
       populate: {
         path: 'items',
         model: 'Item'
+      },
+      path: 'sharedLists',
+      model: 'List',
+      populate: {
+        path: 'items',
+        model: 'Item'
       }
     })
     .exec()
@@ -165,11 +171,15 @@ const updateList = (user_id, list_id, listUpdates) => {
   })
 };
 // add a list to a users shared with me list
+//currently working with initial List.findOne function
+// there is no validation in place to check list_id with the user
+// in db, myList is populated with ids only, what is needed to do this with shared.
 const shareList = (owner_id, username, list_id) => {
   return new Promise((resolve, reject) => {
-    return List.find({_id: list_id, user_id: owner_id})
+    return List.find({ _id: list_id, user_id: owner_id})
     .then(()=> {
-      return User.findOneAndUpdate({username: username},{$push: {sharedLists: list_id}})
+      console.log('list', list_id);
+      return User.findOneAndUpdate({username: username}, {$push: {sharedLists: list_id}})
     })
     .then((user) => {
       console.log('The updated user including shared list', user);
