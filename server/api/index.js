@@ -22,7 +22,7 @@ router.get('/users/:username', (req, res) => {
   //we want to send in the logged in user's id
   //so we can determine if we should send back secret wishlists
   helpers.getUser(req.params.username, loggedInUserId)
-  .then((user) => {
+    .then((user) => {
     res.json(user);
   })
   .catch((err) => {
@@ -100,19 +100,19 @@ router.get('/logout', (req, res) => {
 })
   // .then((res) => {
   //   res.redirect('/');
-  // });
+// });
 
 //Sends back the logged in user's info
 //We use this in the react app
 router.get('/me', (req, res) => {
   var user_id = req.session.user_id;
   helpers.getUserById(user_id)
-  .then((user) => {
-    res.send(user);
-  })
-  .catch((err) => {
-    res.send({});
-  });
+    .then((user) => {
+      res.send(user);
+    })
+    .catch((err) => {
+      res.send({});
+    });
 });
 
 //add new list to user
@@ -148,7 +148,7 @@ router.post('/lists', (req, res) => {
 */
 router.post('/share', (req, res) => {
   var username = req.body.username;
-  var ownerId = req.body.user_id;
+  var ownerId = req.session.user_id;
   var listId = req.body.list_id;
   helpers.shareList(ownerId, username, listId)
   .then((user) => {
@@ -165,8 +165,6 @@ router.post('/share', (req, res) => {
 router.delete('/lists/:id', (req, res) => {
   var list_id = req.params.id;
   var user_id = req.session.user_id;
-  console.log('Req sessions ',req.session);
-  // var user_id = req.session.user_id;
 
   helpers.deleteList(user_id, list_id)
   .then((id) => {

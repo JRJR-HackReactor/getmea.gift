@@ -5,22 +5,24 @@ const Item = require('../../app/models/item');
 const getUserById = (user_id) => {
   return new Promise((resolve, reject) => {
     User.findById(user_id)
-    .select('-password') //don't send back password
-    .populate({ //gets nested items
-      path: 'myLists',
-      model: 'List',
-      populate: {
-        path: 'items',
-        model: 'Item'
-      },
-      path: 'sharedLists',
-      model: 'List',
-      populate: {
-        path: 'items',
-        model: 'Item'
-      }
-    })
-    .exec()
+      .select('-password') //don't send back password
+      .populate({ //gets nested items
+        path: 'myLists',
+        model: 'List',
+        populate: {
+          path: 'items',
+          model: 'Item'
+        }
+      })
+      .populate({
+        path: 'sharedLists',
+        model: 'List',
+        populate: {
+          path: 'items',
+          model: 'Item'
+        }
+      })
+      .exec()
     .then((user) => {
       //check if user doesn't exist
       if (!user) {
@@ -59,7 +61,6 @@ const getUser = (username, loggedInUserId) => {
       if (!user) {
         reject('user does not exist');
       }
-
       //Only return secret wishlists if user is owner
       if (loggedInUserId == user._id) {
         resolve(user);
@@ -176,10 +177,9 @@ const updateList = (user_id, list_id, listUpdates) => {
 // in db, myList is populated with ids only, what is needed to do this with shared.
 const shareList = (owner_id, username, list_id) => {
   return new Promise((resolve, reject) => {
-    return List.find({ _id: list_id, user_id: owner_id})
-    .then(()=> {
-      console.log('list', list_id);
-      return User.findOneAndUpdate({username: username}, {$push: {sharedLists: list_id}})
+    return List.find({_id: list_id, user_id: owner_id})
+      .then( (list)=> {
+      return User.findOneAndUpdate({username: username},{$push: {sharedLists: list_id}})
     })
     .then((user) => {
       console.log('The updated user including shared list', user);

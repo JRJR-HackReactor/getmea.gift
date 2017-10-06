@@ -9,8 +9,8 @@ var Items = (props) => (
           return <Item item={item} key={index} refresh={props.refresh} userData={props.userData} isOwner={props.isOwner} index={index}/>
         })
         }
-      </TableBody>
-    </Table>
+  </TableBody>
+  </Table>
   </div>
 )
 export default Items;

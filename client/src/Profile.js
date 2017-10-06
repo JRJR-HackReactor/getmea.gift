@@ -56,7 +56,8 @@ class Profile extends Component {
   }
 
   render() {
-    var lists = this.state.showMyLists ? this.state.myLists : this.state.sharedLists;
+    var isOwner = this.state.showMyLists;
+    var lists = isOwner ? this.state.myLists : this.state.sharedLists;
     return (
       <div className="wishlistContainer" style={{maxWidth: 800, margin: 'auto', textAlign: 'center', paddingTop: 50}} >
         <div>
@@ -70,11 +71,11 @@ class Profile extends Component {
           <Paper zDepth={2}>
             { (lists.length) < 1 ? <div> <img style={{height: 150, width: 150, padding: 20, paddingBottom: 0, filter: 'grayscale(100%)'}} src={giftImage} alt='none'/>
               <h4 style={{padding: 0, color: 'grey'}}>No Lists Here</h4>
-            </div> : <Lists lists={lists} refresh={this.props.refresh} username={this.state.userData.username} history={this.props.history}/>
+            </div> : <Lists lists={lists} isOwner={isOwner} refresh={this.props.refresh} username={this.state.userData.username} history={this.props.history}/>
             }
           </Paper>
         </div>
-        <AddList func={this.testAdd} currentUser={this.state.userData} refresh={this.props.refresh}/>
+        <AddList func={this.testAdd} isOwner={isOwner} currentUser={this.state.userData} refresh={this.props.refresh}/>
       </div>
     );
   }
