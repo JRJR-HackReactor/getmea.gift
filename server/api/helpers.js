@@ -47,7 +47,9 @@ const getUser = (username, loggedInUserId) => {
       populate: {
         path: 'items',
         model: 'Item'
-      },
+      }
+    })
+    .populate({
       path: 'sharedLists',
       model: 'List',
       populate: {

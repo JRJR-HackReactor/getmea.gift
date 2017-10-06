@@ -78,7 +78,14 @@ router.post('/login', (req, res) => {
       res.status(401).send({err: err});
     } else {
       req.session.user_id = user._id;
-      res.send(user);
+      helpers.getUserById(req.session.user_id)
+        .then((user) => {
+          console.log('I am here', user);
+          res.send(user);
+        })
+        .catch((err) => {
+          res.send({});
+        });
     }
   })(req, res);
 });
