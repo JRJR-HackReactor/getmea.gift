@@ -4,7 +4,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import Dialog from 'material-ui/Dialog';
 import TextField from 'material-ui/TextField';
 import {ShareButtons, generateShareIcon} from 'react-share';
-
+import axios from 'axios';
 /* https://www.npmjs.com/package/react-copy-to-clipboard */
 import CopyToClipboard from 'react-copy-to-clipboard';
 
@@ -20,43 +20,48 @@ const TwitterIcon = generateShareIcon('twitter');
 const GooglePlusIcon = generateShareIcon('google');
 const EmailIcon = generateShareIcon('email');
 
-export default class Share extends Component {
+class Share extends Component {
   constructor (props) {
     super(props);
 
     this.state = {
       copied: false,
-      open: false
+      open: false,
+      shareUser: ''
     };
-
-    this.handleOpen = () => {
-      this.setState({open: true});
-    };
-
-    this.handleClose = () => {
-      this.setState({
-        errorTextTitle: '*Required',
-        open: false
-      });
-    };
-
-    this.handleCopied = () => {
-      this.setState({
-        copied: true
-      });
-
-      //shows the 'copied' text for only 5 seconds
-      setTimeout(() => {
-        this.setState({
-          copied: false
-        })
-      }, 5000);
-    } 
   }
-  
-  getInitialState() {
-    return {value: '', copied: false};
+
+  handleCopied = () => {
+    this.setState({
+      copied: true
+    });
+    //shows the 'copied' text for only 5 seconds
+    setTimeout(() => {
+      this.setState({
+        copied: false
+      })
+    }, 5000);
   }
+
+  shareList = () => {
+    axios.post('/api/share', {
+        username: this.state.shareUser,
+        list_id: this.props.list
+    }) 
+      .catch( (err) =>{
+        console.log(err);
+      })
+    this.props.onRequestClose();
+  }
+
+  handleUserChange = (e) => {
+    this.setState({shareUser: e.target.value});
+  }
+
+  toggleMethod = () => {
+    this.setState({method:!this.state.method})
+  }
+
   render() {
     const actions = [
       <FlatButton
@@ -72,38 +77,52 @@ export default class Share extends Component {
     var url = "https://www.hackreactor.com/"
     return (
       <Dialog
-      title="Share This List"
-      actions={actions}
-      modal={true}
-      open={this.props.open}
-      onRequestClose={this.props.onRequestClose}
-      >
-        <TextField value={value}
-        name="url"
-        hintText=""
-        onChange={() => this.setState({copied: false})}
-        style={{width: 300, marginRight: 50}}
-        />
-        <CopyToClipboard text={value}
-        onCopy={() => this.handleCopied() }>
-        <RaisedButton primary label="Copy to clipboard" style={{marginRight: 25}}></RaisedButton>
-        </CopyToClipboard>
-        <FacebookShareButton url={url}>
-          <FacebookIcon size={32} round />
-        </FacebookShareButton>
-        <GooglePlusShareButton url={url}>
-          <GooglePlusIcon size={32} round />
-        </GooglePlusShareButton>
-        <TwitterShareButton url={url}>
-          <TwitterIcon size={32} round />
-        </TwitterShareButton>
-        <EmailShareButton url={url}>
-          <EmailIcon size={32} round />
-        </EmailShareButton>
-        
-      </Dialog>  
+        title="Share This List"
+        actions={actions}
+        modal={true}
+        open={this.props.open}
+        onRequestClose={this.props.onRequestClose}> 
+        {this.state.method ? 
+          <div>
+            <TextField value={value}
+              name="url"
+              hintText=""
+              onChange={() => this.setState({copied: false})}
+              style={{width: 300, marginRight: 50}}
+            />
+            <CopyToClipboard text={value} onCopy={() => this.handleCopied() }>
+              <RaisedButton primary label="Copy to clipboard" style={{marginRight: 25}}></RaisedButton>
+            </CopyToClipboard>
+          </div> :
+          <div>
+            <TextField
+              name='username'
+              hintText='user you want to share with'
+              onChange={this.handleUserChange}
+              style={{width: 300, marginRight: 50}}
+            />
+            <RaisedButton primary label="Share with user" style={{marginRight: 25}} onClick={this.shareList}></RaisedButton> 
+          </div>}
+          <div>
+            <p>Share with non-user? <span style={{cursor: 'pointer'}} onClick={this.toggleMethod}>Share</span></p>
+          </div>
+            <div className="shareBtn"> 
+              <FacebookShareButton className="shareBtn" url={url}>
+                <FacebookIcon size={32} round />
+              </FacebookShareButton>
+              <GooglePlusShareButton className="shareBtn" url={url}>
+                <GooglePlusIcon size={32} round />
+              </GooglePlusShareButton>
+              <TwitterShareButton className="shareBtn" url={url}>
+                <TwitterIcon size={32} round />
+              </TwitterShareButton>
+              <EmailShareButton className="shareBtn" url={url}>
+                <EmailIcon size={32} round />
+              </EmailShareButton>
+            </div>
+          </Dialog>  
     );
   }
 }
 
-
+export default Share;

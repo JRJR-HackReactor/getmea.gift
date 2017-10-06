@@ -5,16 +5,24 @@ const Item = require('../../app/models/item');
 const getUserById = (user_id) => {
   return new Promise((resolve, reject) => {
     User.findById(user_id)
-    .select('-password') //don't send back password
-    .populate({ //gets nested items
-      path: 'myLists',
-      model: 'List',
-      populate: {
-        path: 'items',
-        model: 'Item'
-      }
-    })
-    .exec()
+      .select('-password') //don't send back password
+      .populate({ //gets nested items
+        path: 'myLists',
+        model: 'List',
+        populate: {
+          path: 'items',
+          model: 'Item'
+        }
+      })
+      .populate({
+        path: 'sharedLists',
+        model: 'List',
+        populate: {
+          path: 'items',
+          model: 'Item'
+        }
+      })
+      .exec()
     .then((user) => {
       //check if user doesn't exist
       if (!user) {
@@ -43,7 +51,7 @@ const getUser = (username, loggedInUserId) => {
       path: 'sharedLists',
       model: 'List',
       populate: {
-        path: 'items',
+        path: 'items',  
         model: 'Item'
       }
     })
@@ -53,7 +61,6 @@ const getUser = (username, loggedInUserId) => {
       if (!user) {
         reject('user does not exist');
       }
-
       //Only return secret wishlists if user is owner
       if (loggedInUserId == user._id) {
         resolve(user);
@@ -168,7 +175,7 @@ const updateList = (user_id, list_id, listUpdates) => {
 const shareList = (owner_id, username, list_id) => {
   return new Promise((resolve, reject) => {
     return List.find({_id: list_id, user_id: owner_id})
-    .then(()=> {
+      .then( (list)=> {
       return User.findOneAndUpdate({username: username},{$push: {sharedLists: list_id}})
     })
     .then((user) => {
@@ -180,7 +187,7 @@ const shareList = (owner_id, username, list_id) => {
       reject(err);
     });
   });
-};
+}; 
 
 //remove a list from a users shared with me list
 const removeSharedList = (owner_id, username, list_id) => {
