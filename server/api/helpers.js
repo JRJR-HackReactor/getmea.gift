@@ -184,7 +184,6 @@ const shareList = (owner_id, username, list_id) => {
       return User.findOneAndUpdate({username: username},{$push: {sharedLists: list_id}})
     })
     .then((user) => {
-      console.log('The updated user including shared list', user);
       resolve(user);
     })
     .catch((err) => {
