@@ -59,6 +59,11 @@ class WishList extends Component {
       }
     })
     
+    if (!isOwner) {
+      items = items.filter((el)=> {
+        return el.purchased === false;
+      })
+    }
     this.setState({
       userData: this.props.currentUser,
       title: title,
@@ -91,12 +96,11 @@ class WishList extends Component {
                       refresh={this.props.refresh}
                       userData={this.state.userData}
                       isOwner={this.state.isOwner}
-                      history={this.props.history}
                     />
             }
           </Paper>
         </div>
-        <AddItem {...this.props} currentUser={this.state.userData} refresh={this.props.refresh}/>
+        {this.state.isOwner ? <AddItem {...this.props} currentUser={this.state.userData} refresh={this.props.refresh}/>  : <div> </div>}
         <Share
           list={this.state.list_id}
           open={this.state.shareOpen}

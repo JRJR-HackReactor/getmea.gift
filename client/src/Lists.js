@@ -24,27 +24,32 @@ class Lists extends React.Component {
   }
 
   deleteList = () => {
-    axios.delete("/api/lists/" + this.state.selectedId)
-      .then(() => {
-        this.handleClose();
-        this.props.refresh();
-      })
+    if(this.props.isOwner) {
+      axios.delete("/api/lists/" + this.state.selectedId)
+        .then(() => {
+          this.handleClose();
+          this.props.refresh();
+        })
+    } else {
+      /*  TODO */
+      ///axios.remove()
+    }
   }
 
   selectHandle = (id) => {
-    console.log(id +this.props.username);
     this.props.history.push('/'+this.props.username+'/'+id)
   }
 
   render() {
-     const deleteActions = [
+    var label = this.props.isOwner ? "delete": "remove";
+    const deleteActions = [
       <FlatButton
         label="Cancel"
         primary={true}
         onClick={this.handleClose}
       />,
       <FlatButton
-        label="Delete List"
+        label={label + " List"} 
         primary={true}
         onClick={this.deleteList}
      />
@@ -54,7 +59,7 @@ class Lists extends React.Component {
         <Table>
           <TableBody>
             { this.props.lists.map((list, index) => {
-              return <List list={list} key={index} delete={this.handleOpen}  select={this.selectHandle}/>
+              return <List list={list} key={index} label={label} delete={this.handleOpen}  select={this.selectHandle}/>
             })
             }
           </TableBody>
@@ -64,7 +69,7 @@ class Lists extends React.Component {
           modal={false}
           open={this.state.open}
           onRequestClose={this.handleClose}
-        > Are you sure you want to delete this list?
+        > Are you sure you want to {label} this list?
         </Dialog>
       </div>
     )

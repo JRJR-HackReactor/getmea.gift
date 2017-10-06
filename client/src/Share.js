@@ -4,7 +4,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import Dialog from 'material-ui/Dialog';
 import TextField from 'material-ui/TextField';
 import {ShareButtons, generateShareIcon} from 'react-share';
-
+import axios from 'axios';
 /* https://www.npmjs.com/package/react-copy-to-clipboard */
 import CopyToClipboard from 'react-copy-to-clipboard';
 
@@ -44,9 +44,13 @@ class Share extends Component {
   }
 
   shareList = () => {
-    if(this.state.shareUser) {
-      console.log(this.state.shareUser,this.props.list);
-    }
+    axios.post('/api/share', {
+        username: this.state.shareUser,
+        list_id: this.props.list
+    }) 
+      .catch( (err) =>{
+        console.log(err);
+      })
     this.props.onRequestClose();
   }
 
