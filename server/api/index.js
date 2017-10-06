@@ -1,8 +1,5 @@
 const router = require('express').Router();
 const User = require('../../app/models/user');
-
-const List = require('../../app/models/list');
-const Item = require('../../app/models/item');
 const helpers = require('./helpers');
 const passport = require('passport');
 
@@ -28,6 +25,19 @@ router.get('/users/:username', (req, res) => {
   .catch((err) => {
     res.status(401).send({err});
   })
+})
+
+router.post('/messages', (req, res) => {
+  if(req.session.user_id  !== null) {
+    helpers.getMessages(req.body.params.list_id)
+      .then((messages) => {
+        res.send(messages);
+      })
+      .catch((err) => {
+        console.log('error on get messages');
+        res.send(414);
+      })
+  }
 })
 
 //add new user
@@ -80,7 +90,6 @@ router.post('/login', (req, res) => {
       req.session.user_id = user._id;
       helpers.getUserById(req.session.user_id)
         .then((user) => {
-          console.log('I am here', user);
           res.send(user);
         })
         .catch((err) => {
@@ -159,7 +168,6 @@ router.post('/share', (req, res) => {
   var listId = req.body.list_id;
   helpers.shareList(ownerId, username, listId)
   .then((user) => {
-    console.log('Post complete', user);
     res.end();
   })
   .catch((err) =>{
@@ -238,6 +246,23 @@ router.post('/items', (req, res) => {
   .catch((err) => {
     res.status(401).send({err});
   });
+})
+
+router.post('/message', (req, res) => {
+  var message = {
+    text: req.body.params.text,
+    name: req.body.params.name,
+    list_id: req.body.params.list_id
+  };
+  helpers.addMessage(message);
+  helpers.getMessages(req.body.params.list_id)
+    .then((messages) => {
+      res.send(messages);
+    })
+    .catch((err) => {
+      console.log('catch in get');
+      res.send(err);
+    })
 })
 
 //toggle item purchased
