@@ -1,6 +1,7 @@
 const User = require('../../app/models/user');
 const List = require('../../app/models/list');
 const Item = require('../../app/models/item');
+const Message = require('../../app/models/message');
 
 const getUserById = (user_id) => {
   return new Promise((resolve, reject) => {
@@ -184,7 +185,6 @@ const shareList = (owner_id, username, list_id) => {
       return User.findOneAndUpdate({username: username},{$push: {sharedLists: list_id}})
     })
     .then((user) => {
-      console.log('The updated user including shared list', user);
       resolve(user);
     })
     .catch((err) => {
@@ -304,6 +304,27 @@ const deleteItem = (user_id, item_id) => {
   })
 };
 
+const addMessage = (message) => {
+  const newMessage = new Message(message);
+  //save new item to database
+  newMessage.save();
+  return;
+}
+
+
+const getMessages = (list_id) => {
+  return new Promise( (resolve,reject) => {
+    return Message.find({list_id: list_id})
+      .then( (messages) => {
+        resolve(messages);
+      })
+      .catch((el) => {
+        console.log('in reject');
+        reject(err);
+      })
+  })
+}
+
 
 module.exports = {
   getUserById,
@@ -314,5 +335,7 @@ module.exports = {
   shareList,
   addItem,
   updateItem,
-  deleteItem
+  deleteItem,
+  addMessage,
+  getMessages
 }
