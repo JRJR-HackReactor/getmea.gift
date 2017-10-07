@@ -11,8 +11,10 @@ const mongoose = require('mongoose')
 const passport = require('passport');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
-
-
+const port = process.env.PORT || 3001;
+var server = app.listen(port);
+const io = require('socket.io').listen(server);
+const helpers = require('./api/helpers');
 //connecting to the mongoose database
 mongoose.connect(process.env.MONGODB_URI, { useMongoClient: true });
 //mongoose Promises are deprecated in Mongoose 4 (think we used mongo3 for sprint)
@@ -46,7 +48,35 @@ if (!process.env.DEV) {
   });
 }
 
-const port = process.env.PORT || 3001;
-app.listen(port);
+io.on('connection', function (socket) {
+  socket.on('postMessage', function(obj) {
+    if(obj.messsage !== null) {
+      helpers.addMessage(obj.message) 
+        .then(() =>{
+          helpers.getMessages(obj.id)
+            .then((messages) => {
+              console.log(messages,obj.id);
+              var data = {messages: messages}
+              socket.emit(obj.id,data);
+            })
+            .catch((err) => {
+              console.log('error on get messages');
+            })    
+        });
+    } else {
+      helpers.getMessages(obj.id)
+        .then((messages) => {
+          console.log(messages,obj.id);
+          var data = {messages: messages}
+          socket.emit('test',data);
+        })
+        .catch((err) => {
+          console.log('error on get messages');
+        })    
+    }
+  })
+})
+
+
 
 console.log(`Server listening on ${port}`);

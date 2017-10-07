@@ -3,7 +3,7 @@ import muiThemeable from 'material-ui/styles/muiThemeable';
 import Paper from 'material-ui/Paper';
 import AppBar from 'material-ui/AppBar';
 import { Tabs, Tab } from 'material-ui/Tabs';
-import giftImage from './img/gift.png';
+import giftImage from '../img/gift.png';
 
 import AddList from './AddList';
 import Lists from './Lists';
@@ -59,7 +59,7 @@ class Profile extends Component {
     var isOwner = this.state.showMyLists;
     var lists = isOwner ? this.state.myLists : this.state.sharedLists;
     return (
-      <div className="wishlistContainer" style={{maxWidth: 800, margin: 'auto', textAlign: 'center', paddingTop: 50}} >
+      <div className="wishlistContainer" style={{maxWidth: 1100, margin: 'auto', textAlign: 'center', paddingTop: 50}} >
         <div>
           <AppBar title={this.props.match.params.username.toUpperCase()} showMenuIconButton={false} ></AppBar>
           <Tabs>
