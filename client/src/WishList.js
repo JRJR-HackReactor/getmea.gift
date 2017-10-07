@@ -92,15 +92,7 @@ class WishList extends Component {
     return (
       <div className="wishlistContainer" style={{maxWidth: 800, margin: 'auto', textAlign: 'center', paddingTop: 50}} >
         <div>
-<<<<<<< HEAD
-          <AppBar
-            title={this.state.title.toUpperCase()}
-            iconElementLeft={<ArrowBack onClick={() => {console.log('clicked');}}/>}
-            iconElementRight={<FlatButton label="Share" onClick={this.openShare}/>}
-          />
-=======
           <AppBar showMenuIconButton={false} title={this.state.title.toUpperCase()} iconElementRight={<FlatButton label="Share" onClick={this.openShare}/>} ></AppBar>
->>>>>>> 957fe4940ce092399abf72233060b6afa93daa54
         </div>
         <div className="paperContainer">
           <Paper zDepth={2}>
