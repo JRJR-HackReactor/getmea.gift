@@ -61,7 +61,7 @@ class Profile extends Component {
     return (
       <div className="wishlistContainer" style={{maxWidth: 800, margin: 'auto', textAlign: 'center', paddingTop: 50}} >
         <div>
-          <AppBar title={this.props.match.params.username.toUpperCase()} ></AppBar>
+          <AppBar title={this.props.match.params.username.toUpperCase()} showMenuIconButton={false} ></AppBar>
           <Tabs>
             <Tab onActive={this.showMyLists.bind(this)} label="Your Wishlists" />
             <Tab onActive={this.showSharedLists.bind(this)} label="Shared Wishlists" />

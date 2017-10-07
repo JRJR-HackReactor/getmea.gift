@@ -3,6 +3,7 @@ import muiThemeable from 'material-ui/styles/muiThemeable';
 import Paper from 'material-ui/Paper';
 import AppBar from 'material-ui/AppBar';
 import {FlatButton} from 'material-ui';
+// import ArrowBack from 'material-ui/svg-icons/navigation/arrow-back';
 import giftImage from './img/gift.png';
 import AddItem from './AddItem';
 import Items from './Items';
@@ -19,7 +20,13 @@ const style = {
     maxHeight: 120,
     maxWidth: '100%'
   },
+  appBarButtons: {
+    fontSize: '12px',
+    marginTop: '7px',
+    color: '#fffeee'
+  }
 };
+
 
 
 
@@ -59,7 +66,7 @@ class WishList extends Component {
         items = el.items;
       }
     })
-    
+
     if (!isOwner) {
       items = items.filter((el)=> {
         return el.purchased === false;
@@ -89,13 +96,17 @@ class WishList extends Component {
     return (
       <div className="wishlistContainer" style={{maxWidth: 800, margin: 'auto', textAlign: 'center', paddingTop: 50}} >
         <div>
-          <AppBar title={this.state.title.toUpperCase()} iconElementRight={button}></AppBar>
+          <AppBar
+            title={this.state.title.toUpperCase()}
+            iconElementLeft={<FlatButton style={style.appBarButtons} label="Back" onClick={() => {this.props.history.push(`/${this.state.userData.username}`)}} />}
+            iconElementRight={<FlatButton style={style.appBarButtons} label="Share" onClick={this.openShare}/>}
+          />
         </div>
         <div className="paperContainer">
           <Paper zDepth={2}>
             { (this.state.items.length) < 1 ? <div> <img style={{height: 150, width: 150, padding: 20, paddingBottom: 0, filter: 'grayscale(100%)'}} src={giftImage} alt='none'/>
               <h4 style={{padding: 0, color: 'grey'}}>No Items Here</h4>
-            </div> : <Items 
+            </div> : <Items
                       items={this.state.items}
                       refresh={this.props.refresh}
                       userData={this.state.userData}
@@ -104,15 +115,15 @@ class WishList extends Component {
             }
           </Paper>
         </div>
-        {this.state.isOwner ? 
+        {this.state.isOwner ?
         <div>
-          <AddItem {...this.props} currentUser={this.state.userData} refresh={this.props.refresh}/> 
+          <AddItem {...this.props} currentUser={this.state.userData} refresh={this.props.refresh}/>
           <Share
             list={this.state.list_id}
             open={this.state.shareOpen}
             onRequestClose={this.closeShare.bind(this)}
-            handleClose={this.closeShare.bind(this)} /> 
-        </div> : <Chat list_id={this.state.list_id} name={name}/> } 
+            handleClose={this.closeShare.bind(this)} />
+        </div> : <Chat list_id={this.state.list_id} name={name}/> }
       </div>
      );
   }

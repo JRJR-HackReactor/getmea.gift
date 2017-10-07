@@ -106,7 +106,7 @@ class App extends Component {
                 ></AppBar>
                 <AppDrawer handleLogout={this.handleLogout.bind(this)} currentUser={this.state.currentUser} setCurrentList={this.setCurrentList.bind(this)} toggleDrawer={this.toggleDrawer.bind(this)} open={this.state.drawerShow} />
                 <Switch>
-                  <Route exact path="/:username/:list_id" component={(props) => <WishList {...props} currentUser={this.state.currentUser} refresh={this.getLoggedInUser.bind(this)}/>} />
+                  <Route exact path="/:username/:list_id" component={(props) => <WishList {...props} currentUser={this.state.currentUser} refresh={this.getLoggedInUser.bind(this)} history={history} />} />
                   <Route exact path="/:username" component={(props) => <Profile {...props} currentUser={this.state.currentUser} refresh={this.getLoggedInUser.bind(this)}/>} />
                   <Route path="/" component={Homepage}/>
                 </Switch>
