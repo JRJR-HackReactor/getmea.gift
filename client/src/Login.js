@@ -23,7 +23,8 @@ export default class Login extends Component {
       register: false,
       username: '',
       password: '',
-      verifyPassword: ''
+      verifyPassword: '',
+      loggingOut: this.props.loggingOut
     };
 
     this.handleOpen = () => {
@@ -101,6 +102,11 @@ export default class Login extends Component {
         }
       }
     }
+
+    this.handleLogout = (e) => {
+      this.setState({loggingOut: true});
+      this.props.handleLogout(e);
+    }
   };
 
   render() {
@@ -141,8 +147,10 @@ export default class Login extends Component {
       />
     ];
 
+    var welcomeBackLabel = (this.state.loggingOut)? "Logging Out..." : "Logout";
+
     var welcomeBack = (
-      <RaisedButton secondary style={{color: 'white'}} className="LogoutBtn" label={"Logout, "+username} onClick={this.props.handleLogout} />
+      <RaisedButton secondary style={{color: 'white'}} className="LogoutBtn" label={welcomeBackLabel} onClick={this.handleLogout} />
     );
 
     var loginDiv = (
