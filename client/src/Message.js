@@ -1,10 +1,26 @@
 import React from 'react';
-import {TableRow,TableRowColumn} from 'material-ui';
+import {Divider} from 'material-ui';
+import Avatar from 'material-ui/Avatar';
+import Chip from 'material-ui/Chip';
+import FontIcon from 'material-ui/FontIcon';
+
+const style = {
+  margin:4
+}
+
 var Message = (props) => (
-  <TableRow>
-    <TableRowColumn style={{fontSize: 18, width: '25%'}}>{props.message.name}</TableRowColumn>   
-    <TableRowColumn style={{fontSize: 18, width: '60%'}}>{props.message.text}</TableRowColumn>
-  </TableRow>
+  <div>   
+    <div className = "message"> 
+      <div className='name'>
+        <Chip style={style}>
+          <Avatar icon={<FontIcon className="material-icons">perm_identity</FontIcon>} />
+          {props.message.name}
+        </Chip>
+      </div> 
+      <div className='text'><p>{props.message.text}</p></div>
+    </div>
+    <Divider />
+  </div>
 )
 
 export default Message; 
