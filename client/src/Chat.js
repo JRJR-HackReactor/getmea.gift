@@ -66,9 +66,9 @@ class Chat extends React.Component {
       })
   }
 
-  render() {
-    return (
-      <Paper z={2}>
+  render() {    
+   return (
+      <Paper z={4}>
         <TextField
           hintText="message"
           multiLine={true}
