@@ -31,6 +31,25 @@ const AppDrawer = ({open, toggleDrawer, currentUser, muiTheme, showLists, histor
       })
     )
   }
+  const renderSharedLists = () => {
+    var username = currentUser.username;
+    return (
+      currentUser.sharedLists.map((list, index) => {
+        return (
+          <MenuItem
+            key={index}
+            rightIcon={list.secret ? <VisibilityOff /> : <Visibility />}
+            primaryText={list.title}
+            onClick={ () => {
+              history.push('/'+username+'/'+list._id);
+              setCurrentList(list);
+              toggleDrawer();
+            } }
+          ></MenuItem>
+        )
+      })
+    )
+  }
 const navigateHomeProfile = () => {
   history.push('/'+currentUser.username+'');
   setCurrentList({});
@@ -46,11 +65,19 @@ const navigateHomeProfile = () => {
         <Divider />
         {/* If user is logged in, show a submenu of all their Wishlists */
         currentUser.username ?
+        <div>
           <MenuItem
             primaryText="My Lists"
             rightIcon={<ArrowDropRight />}
             menuItems={renderLists()}
-          ></MenuItem> : null
+          ></MenuItem>
+          <MenuItem
+            primaryText="Shared Lists"
+            rightIcon={<ArrowDropRight />}
+            menuItems={renderSharedLists()}
+          />
+          </div>
+          : null
         }
       </Drawer>
     </div>

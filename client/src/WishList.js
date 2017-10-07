@@ -3,7 +3,7 @@ import muiThemeable from 'material-ui/styles/muiThemeable';
 import Paper from 'material-ui/Paper';
 import AppBar from 'material-ui/AppBar';
 import {FlatButton} from 'material-ui';
-import ArrowBack from 'material-ui/svg-icons/navigation/arrow-back';
+// import ArrowBack from 'material-ui/svg-icons/navigation/arrow-back';
 import giftImage from './img/gift.png';
 import AddItem from './AddItem';
 import Items from './Items';
@@ -20,7 +20,13 @@ const style = {
     maxHeight: 120,
     maxWidth: '100%'
   },
+  appBarButtons: {
+    fontSize: '12px',
+    marginTop: '7px',
+    color: '#fffeee'
+  }
 };
+
 
 
 
@@ -92,7 +98,11 @@ class WishList extends Component {
     return (
       <div className="wishlistContainer" style={{maxWidth: 800, margin: 'auto', textAlign: 'center', paddingTop: 50}} >
         <div>
-          <AppBar showMenuIconButton={false} title={this.state.title.toUpperCase()} iconElementRight={<FlatButton label="Share" onClick={this.openShare}/>} ></AppBar>
+          <AppBar
+            title={this.state.title.toUpperCase()}
+            iconElementLeft={<FlatButton style={style.appBarButtons} label="Back" onClick={() => {this.props.history.push(`/${this.state.userData.username}`)}} />}
+            iconElementRight={<FlatButton style={style.appBarButtons} label="Share" onClick={this.openShare}/>}
+          />
         </div>
         <div className="paperContainer">
           <Paper zDepth={2}>
