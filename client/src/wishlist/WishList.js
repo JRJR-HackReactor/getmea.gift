@@ -4,13 +4,13 @@ import Paper from 'material-ui/Paper';
 import AppBar from 'material-ui/AppBar';
 import {FlatButton} from 'material-ui';
 // import ArrowBack from 'material-ui/svg-icons/navigation/arrow-back';
-import giftImage from './img/gift.png';
+import giftImage from '../img/gift.png';
 import AddItem from './AddItem';
 import Items from './Items';
 import Share from './Share';
-import Chat from './Chat';
-const style = {
+import Chat from './chat/Chat';
 
+const style = {
   backgroundStyle: {
     backgroundColor: '#eaf2ff',
     height: '110%',
@@ -26,9 +26,6 @@ const style = {
     color: '#fffeee'
   }
 };
-
-
-
 
 class WishList extends Component {
   constructor(props) {
@@ -99,7 +96,7 @@ class WishList extends Component {
           <AppBar
             title={this.state.title.toUpperCase()}
             iconElementLeft={<FlatButton style={style.appBarButtons} label="Back" onClick={() => {this.props.history.push(`/${this.state.userData.username}`)}} />}
-            iconElementRight={<FlatButton style={style.appBarButtons} label="Share" onClick={this.openShare}/>}
+            iconElementRight={button}
           />
         </div>
         <div className="paperContainer">
@@ -125,7 +122,7 @@ class WishList extends Component {
             handleClose={this.closeShare.bind(this)} />
         </div> : <Chat list_id={this.state.list_id} name={name}/> }
       </div>
-     );
+    );
   }
 }
 

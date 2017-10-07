@@ -305,10 +305,12 @@ const deleteItem = (user_id, item_id) => {
 };
 
 const addMessage = (message) => {
-  const newMessage = new Message(message);
-  //save new item to database
-  newMessage.save();
-  return;
+  return new Promise ((resolve,reject) => {
+    const newMessage = new Message(message);
+    //save new item to database
+    newMessage.save();
+    resolve(true);
+  })
 }
 
 

@@ -1,42 +1,41 @@
 import React from 'react';
 import Messages from './Messages';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import {Paper, TextField} from 'material-ui';
-import axios from 'axios';
-
+import socketIOClient from "socket.io-client";
+/// need to change when deployed
+const socket = socketIOClient('localhost:3000');
 class Chat extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       messages: [],
-      inputMes: ''
+      inputMes: '',
     }
   }
-  componentDidMount() {
+
+  componentWillMount() {
     this.getMessages();
+    var context = this;
+    socket.on(context.props.list_id, function(data) {
+      if(data.messages === null) {
+        context.setState({messages:[]});
+      } else {
+        context.setState({
+          messages:data.messages,
+          inputMes: ''
+        });
+      }
+    });
   }
 
   getMessages = () => {
-    axios.post('/api/messages', {
-      params: {
-        list_id: this.props.list_id
-      }
-    })
-      .then((messages) => {
-        if(messages === null) {
-          this.setState({messages:[]});
-        } else {
-          messages.data.forEach( (el)  => {
-            //el.timestamp = moment(el.timestamp).format(ddd, Do, YYYY);  // maybe work
-          })
-          this.setState({messages:messages.data});
-        }
-      })
-      .catch((err) => {
-        console.log(err,"didn't get messages in chat");
-      })
+    var obj = {
+      id: this.props.list_id,
+      message: null
+    }
+    socket.emit('postMessage', obj)
   }
 
   handleChange = (e) => {
@@ -46,30 +45,21 @@ class Chat extends React.Component {
   }
 
   messageSubmit = () => {
-    var arr = this.state.messages.slice();
-    arr.push(this.state.inputMes);
-    this.setState({messages: arr});
-    axios.post('/api/message', {
-      params: {
+    var obj = {
+      id: this.props.list_id,
+      message: {
         text: this.state.inputMes,
         name: this.props.name,
         list_id: this.props.list_id
       }
-    })
-      .then((messages) => {
-        this.setState({
-          messages:messages.data,
-          inputMes: ''
-        })
-      })
-      .catch((err)=> {
-        console.log("err in message submit", err);
-      })
-  }
+    }
+    socket.emit('postMessage',obj);
+  } 
 
   render() {    
    return (
-      <Paper z={4}>
+      <Paper rounded={false} zDepth={5} style={{padding:5}}>
+        <br/> 
         <TextField
           hintText="message"
           multiLine={true}

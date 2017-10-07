@@ -3,7 +3,6 @@ const User = require('../../app/models/user');
 const helpers = require('./helpers');
 const passport = require('passport');
 
-
 //get all users
 //We actually won't need this for our app, but good for testing db
 router.get('/users', (req, res) => {
@@ -121,6 +120,7 @@ router.get('/logout', (req, res) => {
 //Sends back the logged in user's info
 //We use this in the react app
 router.get('/me', (req, res) => {
+  console.log('me');
   var user_id = req.session.user_id;
   helpers.getUserById(user_id)
     .then((user) => {
@@ -271,6 +271,19 @@ router.post('/message', (req, res) => {
 	"purchased": true
 }
 */
+router.post('/messages', (req, res) => {
+  if(req.session.user_id  !== null) {
+    helpers.getMessages(req.body.params.list_id)
+      .then((messages) => {
+        res.send(messages);
+      })
+      .catch((err) => {
+        console.log('error on get messages');
+        res.send(414);
+      })
+  }
+})
+
 router.put('/setPurchased/:id', (req, res) => {
   var item_id = req.params.id;
   var updates = {purchased: req.body.purchased};
@@ -297,7 +310,5 @@ router.delete('/items/:id', (req, res) => {
     res.status(401).send({err});
   });
 });
-
-
 
 module.exports = router;

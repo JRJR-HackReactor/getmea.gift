@@ -11,13 +11,13 @@ import {
 } from 'react-router-dom';
 import createHistory from 'history/createBrowserHistory';
 import Homepage from './Homepage';
-import Profile from './Profile';
+import Profile from './profile/./Profile';
 import Footer from './Footer';
 import Login from './Login';
 import Menu from 'material-ui/svg-icons/navigation/menu';
 import AppDrawer from './AppDrawer';
 import IconButton from 'material-ui/IconButton';
-import WishList from './WishList';
+import WishList from './wishlist/WishList';
 
 const history = createHistory();
 //overwrite default theme
@@ -53,6 +53,9 @@ class App extends Component {
           currentUser: user.data
         })
       })
+        .catch((err) => {
+        console.log(err);
+        })
     }
 
     this.setCurrentList = (list) => {
