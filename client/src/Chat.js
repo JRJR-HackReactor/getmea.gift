@@ -1,6 +1,7 @@
 import React from 'react';
 import Messages from './Messages';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
+import RaisedButton from 'material-ui/RaisedButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import {Paper, TextField} from 'material-ui';
 import axios from 'axios';
@@ -51,9 +52,9 @@ class Chat extends React.Component {
     axios.post('/api/message', {
       params: {
         text: this.state.inputMes,
-        name: this.props.name, 
+        name: this.props.name,
         list_id: this.props.list_id
-      } 
+      }
     })
       .then((messages) => {
         this.setState({
@@ -77,9 +78,13 @@ class Chat extends React.Component {
           value={this.state.inputMes}
           onChange={this.handleChange}
         />
-        <FloatingActionButton mini={true} onClick={this.messageSubmit.bind(this)}>
-          <ContentAdd />
-        </FloatingActionButton><br />
+        <RaisedButton
+          label="Send"
+          labelPosition="before"
+          onClick={this.messageSubmit.bind(this)}
+          icon={<ContentAdd/>}
+        />
+        <br />
         <Messages messages={this.state.messages}/>
       </Paper>
     )

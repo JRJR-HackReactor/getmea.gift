@@ -3,6 +3,7 @@ import muiThemeable from 'material-ui/styles/muiThemeable';
 import Paper from 'material-ui/Paper';
 import AppBar from 'material-ui/AppBar';
 import {FlatButton} from 'material-ui';
+import ArrowBack from 'material-ui/svg-icons/navigation/arrow-back';
 import giftImage from './img/gift.png';
 import AddItem from './AddItem';
 import Items from './Items';
@@ -91,7 +92,11 @@ class WishList extends Component {
     return (
       <div className="wishlistContainer" style={{maxWidth: 800, margin: 'auto', textAlign: 'center', paddingTop: 50}} >
         <div>
-          <AppBar showMenuIconButton={false} title={this.state.title.toUpperCase()} iconElementRight={<FlatButton label="Share" onClick={this.openShare}/>} ></AppBar>
+          <AppBar
+            title={this.state.title.toUpperCase()}
+            iconElementLeft={<ArrowBack onClick={() => {console.log('clicked');}}/>}
+            iconElementRight={<FlatButton label="Share" onClick={this.openShare}/>}
+          />
         </div>
         <div className="paperContainer">
           <Paper zDepth={2}>
