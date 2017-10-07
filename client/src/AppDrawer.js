@@ -32,7 +32,6 @@ const AppDrawer = ({open, toggleDrawer, currentUser, muiTheme, showLists, histor
     )
   }
 const navigateHomeProfile = () => {
-  console.log('hello there');
   history.push('/'+currentUser.username+'');
   setCurrentList({});
   toggleDrawer();

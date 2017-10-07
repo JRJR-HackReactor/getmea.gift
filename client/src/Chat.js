@@ -4,6 +4,7 @@ import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import {Paper, TextField} from 'material-ui';
 import axios from 'axios';
+
 class Chat extends React.Component {
   constructor(props) {
     super(props);
@@ -26,6 +27,9 @@ class Chat extends React.Component {
         if(messages === null) {
           this.setState({messages:[]});
         } else {
+          messages.data.forEach( (el)  => {
+            //el.timestamp = moment(el.timestamp).format(ddd, Do, YYYY);  // maybe work
+          })
           this.setState({messages:messages.data});
         }
       })
@@ -52,7 +56,10 @@ class Chat extends React.Component {
       } 
     })
       .then((messages) => {
-        this.setState({messages:messages.data})
+        this.setState({
+          messages:messages.data,
+          inputMes: ''
+        })
       })
       .catch((err)=> {
         console.log("err in message submit", err);
@@ -67,6 +74,7 @@ class Chat extends React.Component {
           multiLine={true}
           rows={1}
           rowsMax={4}
+          value={this.state.inputMes}
           onChange={this.handleChange}
         />
         <FloatingActionButton mini={true} onClick={this.messageSubmit.bind(this)}>

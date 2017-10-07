@@ -84,10 +84,14 @@ class WishList extends Component {
 
   render() {
     var name = this.state.userData === null ? 'Casper' : this.state.userData.username;
+    var button = null;
+    if(this.state.isOwner) {
+      var button = <FlatButton label="Share" onClick={this.openShare}/>;
+    }
     return (
       <div className="wishlistContainer" style={{maxWidth: 800, margin: 'auto', textAlign: 'center', paddingTop: 50}} >
         <div>
-          <AppBar title={this.state.title.toUpperCase()} iconElementRight={<FlatButton label="Share" onClick={this.openShare}/>}></AppBar>
+          <AppBar title={this.state.title.toUpperCase()} iconElementRight={button}></AppBar>
         </div>
         <div className="paperContainer">
           <Paper zDepth={2}>
@@ -102,16 +106,17 @@ class WishList extends Component {
             }
           </Paper>
         </div>
-        {this.state.isOwner ? <AddItem {...this.props} currentUser={this.state.userData} refresh={this.props.refresh}/>  : <div> </div>}
-        <Share
-          list={this.state.list_id}
-          open={this.state.shareOpen}
-          onRequestClose={this.closeShare.bind(this)}
-          handleClose={this.closeShare.bind(this)}
-        />
-        <Chat list_id={this.state.list_id} name={name}/>
+        {this.state.isOwner ? 
+        <div>
+          <AddItem {...this.props} currentUser={this.state.userData} refresh={this.props.refresh}/> 
+          <Share
+            list={this.state.list_id}
+            open={this.state.shareOpen}
+            onRequestClose={this.closeShare.bind(this)}
+            handleClose={this.closeShare.bind(this)} /> 
+        </div> : <Chat list_id={this.state.list_id} name={name}/> } 
       </div>
-    );
+     );
   }
 }
 
