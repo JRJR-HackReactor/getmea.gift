@@ -6,6 +6,7 @@ import ArrowBack from 'material-ui/svg-icons/navigation/arrow-back';
 import Visibility from 'material-ui/svg-icons/action/visibility';
 import VisibilityOff from 'material-ui/svg-icons/action/visibility-off';
 import ArrowDropRight from 'material-ui/svg-icons/navigation-arrow-drop-right';
+import HomeIcon from 'material-ui/svg-icons/action/home';
 import ProfileMenuSection from './ProfileMenuSection';
 import muiThemeable from 'material-ui/styles/muiThemeable';
 import {withRouter} from 'react-router';
@@ -55,13 +56,18 @@ const navigateHomeProfile = () => {
   setCurrentList({});
   toggleDrawer();
 }
+
+const handleMenuLogout = (e) => {
+  (open)? toggleDrawer(): 'Do nothing';
+  handleLogout();
+}
   return (
     <div>
       <Drawer open={open} onClick={toggleDrawer}>
         <MenuItem leftIcon={<ArrowBack />} onClick={toggleDrawer} />
         <MenuItem ><ProfileMenuSection currentUser={currentUser} onClick={navigateHomeProfile} /></MenuItem>
-        {(currentUser !==null ) ? <MenuItem onClick={navigateHomeProfile}>Profile</MenuItem> : ''}
-        <MenuItem leftIcon={<PersonOutline />} onClick={handleLogout}>Logout</MenuItem>
+        {(currentUser.username) ? <MenuItem leftIcon={<HomeIcon />} onClick={navigateHomeProfile}>Profile</MenuItem> : ''}
+        {currentUser.userName && <MenuItem leftIcon={<PersonOutline />} onClick={handleMenuLogout}>Logout</MenuItem>}
         <Divider />
         {/* If user is logged in, show a submenu of all their Wishlists */
         currentUser.username ?

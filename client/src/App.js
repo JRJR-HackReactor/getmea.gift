@@ -43,7 +43,8 @@ class App extends Component {
 
     this.state = {
       currentUser: null,
-      drawerShow: false
+      drawerShow: false,
+      loggingOut: false,
     };
 
     this.getLoggedInUser = () => {
@@ -77,6 +78,7 @@ class App extends Component {
         // this.refresh();
       })
       .then(() => {
+        this.setState({loggingOut: false});
         history.push('/');
 
       })
@@ -101,7 +103,7 @@ class App extends Component {
                 <AppBar id='appBar'
                   title={<Link style={style.logo} to="/">Get Me A Gift</Link>}
                   iconElementLeft={<IconButton><Menu onClick={() => this.toggleDrawer()} /></IconButton>}
-                  iconElementRight={<Login history={history} handleLogout={this.handleLogout.bind(this)} refresh={this.getLoggedInUser.bind(this)} user={this.state.currentUser} currentList={this.state.currentList}/>}
+                  iconElementRight={<Login history={history} handleLogout={this.handleLogout.bind(this)} refresh={this.getLoggedInUser.bind(this)} user={this.state.currentUser} currentList={this.state.currentList} loggingOut={this.state.loggingOut}/>}
                   zDepth={4}
                 ></AppBar>
                 <AppDrawer handleLogout={this.handleLogout.bind(this)} currentUser={this.state.currentUser} setCurrentList={this.setCurrentList.bind(this)} toggleDrawer={this.toggleDrawer.bind(this)} open={this.state.drawerShow} />
