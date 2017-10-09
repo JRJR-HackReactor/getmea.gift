@@ -5,7 +5,7 @@ import ContentAdd from 'material-ui/svg-icons/content/add';
 import {Paper, TextField} from 'material-ui';
 import socketIOClient from "socket.io-client";
 /// need to change when deployed
-const socket = socketIOClient('localhost:3000');
+const socket = socketIOClient('localhost:3001');
 class Chat extends React.Component {
   constructor(props) {
     super(props);
@@ -18,7 +18,7 @@ class Chat extends React.Component {
   componentWillMount() {
     this.getMessages();
     var context = this;
-    socket.on(context.props.list_id, function(data) {
+    socket.on(this.props.list_id, function(data) {
       if(data.messages === null) {
         context.setState({messages:[]});
       } else {

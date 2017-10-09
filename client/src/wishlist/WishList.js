@@ -91,7 +91,7 @@ class WishList extends Component {
     var button = this.state.isOwner ? <FlatButton label="Share" onClick={this.openShare}/> : null;
     
     return (
-      <div className="wishlistContainer" style={{maxWidth: 800, margin: 'auto', textAlign: 'center', paddingTop: 50}} >
+      <div className="wishlistContainer" style={{maxWidth: 1100, margin: 'auto', textAlign: 'center', paddingTop: 50}} >
         <div>
           <AppBar
             title={this.state.title.toUpperCase()}
@@ -111,6 +111,8 @@ class WishList extends Component {
                     />
             }
           </Paper>
+          <br/>
+          <br/>
         </div>
         {this.state.isOwner ?
         <div>
@@ -121,6 +123,7 @@ class WishList extends Component {
             onRequestClose={this.closeShare.bind(this)}
             handleClose={this.closeShare.bind(this)} />
         </div> : <Chat list_id={this.state.list_id} name={name}/> }
+        <br/>
       </div>
     );
   }

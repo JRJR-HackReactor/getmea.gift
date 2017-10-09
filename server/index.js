@@ -57,7 +57,7 @@ io.on('connection', function (socket) {
             .then((messages) => {
               console.log(messages,obj.id);
               var data = {messages: messages}
-              socket.emit(obj.id,data);
+              io.sockets.emit(obj.id ,data);
             })
             .catch((err) => {
               console.log('error on get messages');
@@ -68,7 +68,7 @@ io.on('connection', function (socket) {
         .then((messages) => {
           console.log(messages,obj.id);
           var data = {messages: messages}
-          socket.emit('test',data);
+          io.sockets.emit(obj.id,data);
         })
         .catch((err) => {
           console.log('error on get messages');
